@@ -1,0 +1,85 @@
+#####TOP-K-ELEMENTS#######
+
+#top k in array
+
+#####MY SOLUTION
+
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+       int[] s1;
+       int[] s2;
+       int x = nums[nums.length/2];
+
+       for(int i=0; i<nums.length; i++){
+            if(nums[i]< x){
+                s1[s1.length]=nums[i];
+            }
+            else{
+                s2[s2.length]=nums[i];
+            }
+        }
+        if(s1.length == k-1)return x;
+        else if(s1.length< k-1)return findKthLargest(s1,k);
+        else return findKthLargest(s2,k);
+
+    }
+
+}
+den doulevei h poutana to append
+
+##leetcode solution
+public class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        for (int i = 0; i < k; i++) {
+            minHeap.offer(nums[i]);
+        }
+        
+        for (int i = k; i < nums.length; i++) {
+            if (nums[i] > minHeap.peek()) {
+                minHeap.poll();
+                minHeap.offer(nums[i]);
+            }
+        }
+        
+        return minHeap.peek();
+    }
+}
+#USES MINHEAP
+
+
+#top k frequent elements ultra fast algo
+
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        // Find the frequency of each number
+        Map<Integer, Integer> numFrequencyMap = new HashMap<>();
+        for (int n : nums)
+            numFrequencyMap.put(n, numFrequencyMap.getOrDefault(n, 0) + 1);
+
+        PriorityQueue<Map.Entry<Integer, Integer>> topKElements = new PriorityQueue<>(
+                (e1, e2) -> e1.getValue() - e2.getValue());
+
+        // Go through all numbers of the numFrequencyMap and push them into
+        // topKElements, which will have
+        // the top k frequent numbers. If the heap size is more than k, we remove the
+        // smallest (top) number.
+        for (Map.Entry<Integer, Integer> entry : numFrequencyMap.entrySet()) {
+            topKElements.add(entry);
+            if (topKElements.size() > k) {
+                topKElements.poll();
+            }
+        }
+
+        // Create a list of top k numbers
+        int[] topNumbers = new int[k];
+
+        int i = 0;
+        while (!topKElements.isEmpty()) {
+            topNumbers[i] = topKElements.poll().getKey();
+            i++;
+        }
+
+        return topNumbers;
+    }
+}

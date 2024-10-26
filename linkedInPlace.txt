@@ -1,0 +1,101 @@
+######LINKED_LIST_IN_PLACE###########
+
+#swap nodes in pairs
+
+
+#########MY APPROACH DOESNT WORK DUE TO TIME LIMIT BUT IS CLOSE ENOUGH#########
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if (head == null)return head;
+        if (head.next == null)return head;
+        else{
+            ListNode headcopy = head;
+            while (head.next!= null){
+                ListNode node = head.next;
+                int tmpval = node.val;
+                node.val = head.val;
+                head.val = tmpval;
+                if(node.next==null)return headcopy;
+            }
+            return headcopy;
+        } 
+    }
+}
+
+
+###WORKING SOLUTION
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) 
+        return head; 
+ 
+    ListNode curr = head.next.next; 
+    ListNode prev = head; 
+    head = head.next; 
+    head.next = prev; 
+ 
+    // Fix remaining nodes 
+    while (curr != null && curr.next != null) 
+    { 
+        prev.next = curr.next; 
+        prev = curr; 
+        ListNode temp = curr.next.next; 
+        curr.next.next = curr; 
+        curr = temp; 
+    } 
+     
+    prev.next = curr; 
+ 
+    return head;
+    }
+}
+
+
+#reverse linked list
+
+class Solution {
+    public ListNode reverse(ListNode head) {
+        ListNode current = head;
+        ListNode next = null;
+        ListNode prev = null;
+        
+        while(current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        return prev;
+    }
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        ListNode temp = head;
+        ListNode leftPrev = null, rightNext = null;;
+        ListNode leftNode = null, rightNode = null;
+        int count = 1;
+        while(temp != null) {
+            if(count == left) {
+                leftNode = temp;
+            }
+            else if(count == right && leftNode != null) {
+                rightNode = temp;
+                rightNext = temp.next;
+                rightNode.next = null;
+                ListNode reversed_head = reverse(leftNode);
+                if(leftPrev != null)
+                    leftPrev.next = reversed_head;
+                else
+                    head = reversed_head;
+                leftNode.next = rightNext;
+                break;
+            }
+            if(leftNode == null)
+                leftPrev = temp;
+            temp = temp.next;
+            count += 1;
+        }
+
+        return head;
+    }
+}
+

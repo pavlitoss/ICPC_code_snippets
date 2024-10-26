@@ -1,0 +1,92 @@
+#####2POINTERS########
+
+
+#Water
+class Solution {
+    public int maxArea(int[] height) {
+        int left = 0;
+        int right = height.length-1;
+        int maxWater = 0;
+        while (left<right){
+            int currentWater =  calcWater(height, left,right);
+            if (currentWater > maxWater){
+                maxWater = currentWater;
+            }
+            if(height[left] < height[right]){
+                left ++;
+            }else{
+                right --;
+            }
+        }
+        return maxWater;
+    }
+
+    public int calcWater(int[] height, int index1, int index2){
+        if (height[index1]<= height[index2]){
+            return height[index1]*(index2 - index1);
+        }else return height[index2]*(index2-index1);
+    }
+}
+
+#3sum
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        Arrays.sort(nums);
+
+        for(int i=0;i<nums.length-2;i++) {
+
+            if(i>0 && nums[i] == nums[i-1]){
+                continue;
+            }
+
+            int left = i+1;
+            int right = nums.length - 1;
+
+            while(left<right){
+                int sum = nums[i] + nums[left] + nums[right];
+
+                if(sum == 0) {
+                    res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+
+                    while(left<right && nums[left] == nums[left+1]) left++;
+                    while(left<right && nums[right] == nums[right-1]) right--;
+
+                    left++;
+                    right--;
+                } else if(sum<0) {
+                    left++;
+                } else {
+                    right --;
+                }
+            }
+
+            
+
+        }
+        return res;
+    }
+}
+
+#swap nodes in pairs
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if(head == null || head.next == null){
+            return head;
+        }
+        ListNode nextNode = head.next ,curNode = head;
+        head = nextNode;
+        curNode.next = nextNode.next;
+        nextNode.next = curNode;
+        nextNode = curNode.next;
+        while(nextNode != null && nextNode.next != null){
+                curNode.next = nextNode.next;
+                nextNode.next = nextNode.next.next;
+                curNode.next.next = nextNode;
+                curNode = nextNode;
+                nextNode = nextNode.next;
+        }
+        return head;
+    }
+}
